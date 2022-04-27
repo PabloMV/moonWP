@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useRef } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, BackHandler, StatusBar } from "react-native";
 import { WebView } from "react-native-webview";
 import { PermissionsAndroid } from "react-native";
 import * as Notifications from "expo-notifications";
@@ -36,6 +35,19 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Espere', 'Quer mesmo sair do Moon APP?', [
+        {
+          text: 'Não',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'Sim', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+   
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -52,48 +64,23 @@ export default function App() {
 
         setTimeout(() => {
           const myScript = `
-        setTimeout(()=> {
-          //window.localStorage.setItem("address", "${getAddress[0].city}");
-          //window.localStorage.setItem("latitude", "${location.coords.latitude}");
-          //window.localStorage.setItem("longitude", "${location.coords.longitude}");
-          //window.localStorage.setItem("country", "${getAddress[0].country}");
-          //window.localStorage.setItem("region", "${getAddress[0].region}");
-          window.localStorage.setItem("postalCode", "${getAddress[0].postalCode}");
-          window.localStorage.setItem("number", "${getAddress[0].name}");
-          window.localStorage.setItem("street", "${getAddress[0].street}");   
-          window.localStorage.setItem("userName", "${getAddress[0].city}");     
-         
-         
-          
-         if(window.localStorage.getItem('userName')) {
-            //do login
-            var userName = window.localStorage.getItem('userName');
-            function getPrevPostId(id){   
-              jQuery.post( 'https://moonm.raicom.online', {           
-                  action: "auto_login",      
-                  id: id                  
-                }, function(res) { 
-                 window.alert(res)
-                });
-            }
-            getPrevPostId(userName);
-           
-          }else{
-            window.alert("Please login first");
-          }
-          document.body.innerText=JSON.stringify(window.localStorage);
-          //window.localStorage.setItem('test', 'test');
-          window.alert(window.localStorage.getItem('street'));
-          
-        }, 1000);
-        true; // note: this is required, or you'll sometimes get silent failures
-      `
+          setTimeout(()=> {          
+            window.localStorage.setItem("country", "${getAddress[0].country}");
+            window.localStorage.setItem("region", "${getAddress[0].region}");
+            window.localStorage.setItem("postalCode", "${getAddress[0].postalCode}");
+            window.localStorage.setItem("number", "${getAddress[0].name}");
+            window.localStorage.setItem("street", "${getAddress[0].street}");              
+          }, 1000);
+          true;
+      `;
           console.log(myScript);
           webViewRef.current.injectJavaScript(myScript);
         }, 3000);
         console.log(getAddress, "appJS");
       }
     })();
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () => backHandler.remove();
   }, []);
 
   let text = "Waiting..";
@@ -119,6 +106,7 @@ export default function App() {
   const webViewRef = useRef();
 
   return (
+    <>
     <WebView
       style={styles.container}
       source={{ uri: "https://moon.raicom.online/" }}
@@ -126,12 +114,15 @@ export default function App() {
       onMessage={(event) => {
         Alert.alert(event.nativeEvent.data);
       }}
-     
       ref={webViewRef}
       originWhitelist={["https://*"]}
       //injectedJavaScript={myScript}
     />
+    <StatusBar backgroundColor={"#000"} color={"#fff"} />
+    </>
+    
   );
+  
 }
 
 const styles = StyleSheet.create({

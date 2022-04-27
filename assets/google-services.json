@@ -1,0 +1,48 @@
+{
+    "project_info": {
+      "project_number": "292031254136",
+      "firebase_url": "https://moon-pizzas-default-rtdb.firebaseio.com",
+      "project_id": "moon-pizzas",
+      "storage_bucket": "moon-pizzas.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:292031254136:android:8ffd078a73880b1844e78d",
+          "android_client_info": {
+            "package_name": "com.moonpizzas.food"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "292031254136-otb4ljg53g93qhomlar2kfogq4aqqold.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.moonpizzas.food",
+              "certificate_hash": "0041db7fdeea18b035383c3bf1b157f5ace405e5"
+            }
+          },
+          {
+            "client_id": "292031254136-97pdqpds4o6uulm9jq7vcuu1femtp8cd.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyCZQlSwPYNppZwKLZBaJWM9WxWHeQDEyFg"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "292031254136-97pdqpds4o6uulm9jq7vcuu1femtp8cd.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
